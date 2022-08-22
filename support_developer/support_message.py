@@ -85,6 +85,8 @@ def support_message(
         long_time_user_message = """
         <span>I hope my work has saved you some time!</span><br/>
         """
+    else:
+        long_time_user_message=""
 
     display(HTML(
         """
