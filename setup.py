@@ -27,7 +27,7 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-__version__ = find_version("support_develop", "__version__.py")
+__version__ = find_version("support_developer", "__version__.py")
 
 test_deps =["pytest-cov", "coveralls", "validate_version_code", "pytest", "codacy-coverage"]
 
@@ -36,11 +36,11 @@ extras = {
 }
 
 setup(
-    name='support_develop',
+    name='support_developer',
     version=__version__,
-    description="Simple python package to shut up Tensorflow warnings and logs.",
+    description="Package designed to centralize messages to support developers development work.",
     long_description=long_description,
-    url="https://github.com/LucaCappelletti94/support_develop",
+    url="https://github.com/LucaCappelletti94/support_developer",
     author="Luca Cappelletti",
     author_email="cappelletti.luca94@gmail.com",
     # Choose your license
