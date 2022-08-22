@@ -96,7 +96,7 @@ def support_message(
                 display: table-cell;
                 vertical-align: middle;
                 width: 100%;
-                height: 10em;
+                height: 8em;
                 padding: 1em;
                 padding-left: 11em;
                 background-color: #f7f7f7;
