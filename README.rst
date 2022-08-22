@@ -57,7 +57,7 @@ The above code, when properly parametrized for my use case, will show you
 the following banner. For instance, for the `silence_tensorflow package <https://github.com/LucaCappelletti94/silence_tensorflow>`_
 a user will see:
 
-
+|example|
 
 .. |pip| image:: https://badge.fury.io/py/support-developer.svg
     :target: https://badge.fury.io/py/support-developer
@@ -66,3 +66,7 @@ a user will see:
 .. |downloads| image:: https://pepy.tech/badge/support-developer
     :target: https://pepy.tech/badge/support-developer
     :alt: Pypi total project downloads
+
+.. |example| image:: https://github.com/LucaCappelletti94/support_developer/blob/main/example.png?raw=true
+    :target: https://github.com/LucaCappelletti94/support_developer/blob/main/example.png
+    :alt: Example
