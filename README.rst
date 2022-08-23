@@ -1,6 +1,7 @@
 Support Developer
 ======================
 |pip| |downloads|
+
 Package designed to centralize messages to support developers development work.
 
 I **personally** believe that open source developer should be compensated by the software users when
