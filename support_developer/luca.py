@@ -11,5 +11,6 @@ def support_luca(
         developer_name="Luca",
         github_handle="LucaCappelletti94",
         repository_name=repository_name,
-        image_url="https://avatars.githubusercontent.com/u/7738570?v=4"
+        image_url="https://avatars.githubusercontent.com/u/7738570?v=4",
+        number_of_imports=[100_000]
     )
