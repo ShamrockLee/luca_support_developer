@@ -1,6 +1,7 @@
 from typing import List, Optional
 import json
 import traceback
+import sys
 import os
 
 
@@ -10,8 +11,8 @@ def support_message(
     github_handle: str,
     image_url: str,
     repository_name: Optional[str] = None,
-    expected_stack_trace_depth: int = 2,
-    number_of_imports: List[int] = (5, 100, 1000, 5000)
+    number_of_imports: List[int] = (5, 100, 1000, 5000),
+    always_show: bool = False
 ):
     """Displays a banner asking user to support developer.
     
@@ -27,32 +28,22 @@ def support_message(
         Repository GitHub to link.
     image_url: str
         Link to an image of interest to display.
-    expected_stack_trace_depth: int = 2
-        Expected stack trace that must be matched to 
-        display this banner.
     number_of_imports: List[int] = (5, 100, 1000)
         Import cases where we should display this banner.
+    always_show: bool = False
+        Whether to always display the message.
     """
     if repository_name is None:
         repository_name = package_name
 
-    stack_trace = traceback.extract_stack()
-
-    # If the stack trace depth is not even
-    # up to the expected stack trace, we stop.
-    if len(stack_trace) < expected_stack_trace_depth + 1:
-        return
+    stack_trace = traceback.extract_stack()[:-1]
     
-    # We get the file name of the document
-    # of the given level of stack trace.
-    filename = stack_trace[expected_stack_trace_depth].filename
-
-    # We check whether this is in a Jupyter Notebook.
-    # That is, the package was DIRECTLY IMPORTED in
-    # a Jupyter Notebook, as we do not want to see such
-    # a banner chain-loaded.
-    # If this is not one, we stop.
-    if not filename.endswith("ipykernel_launcher.py"):
+    number_of_inits = sum([
+        trace.filename.endswith("__init__.py")
+        for trace in stack_trace
+    ])
+    
+    if number_of_inits != 1:
         return None
 
     from IPython.display import HTML, display
@@ -78,7 +69,7 @@ def support_message(
 
     # If this is not one of those import cases where we expect
     # to show this banner, we skip forward.
-    if metadata[package_name] not in number_of_imports:
+    if not always_show and metadata[package_name] not in number_of_imports:
         return
 
     if metadata[package_name] > number_of_imports[0]:
