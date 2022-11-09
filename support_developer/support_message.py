@@ -1,8 +1,8 @@
 from typing import List, Optional
 import json
-import traceback
-import sys
 import os
+from .utils import is_directly_imported_in_jupyter_notebook
+
 
 
 def support_message(
@@ -36,15 +36,8 @@ def support_message(
     if repository_name is None:
         repository_name = package_name
 
-    stack_trace = traceback.extract_stack()[:-1]
-    
-    number_of_inits = sum([
-        trace.filename.endswith("__init__.py")
-        for trace in stack_trace
-    ])
-    
-    if number_of_inits != 1:
-        return None
+    if not is_directly_imported_in_jupyter_notebook():
+        return    
 
     from IPython.display import HTML, display
 
