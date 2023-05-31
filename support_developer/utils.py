@@ -3,7 +3,7 @@ import traceback
 
 def is_directly_imported_in_jupyter_notebook() -> bool:
     """Returns whether the current stack starts from a direct import in a Jupyter Notebook.
-    
+
     Implementative details
     -------------------------
     To check whether we are in a Jupyter Notebook and the root package is being

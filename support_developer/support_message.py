@@ -15,7 +15,7 @@ def support_message(
     always_show: bool = False
 ):
     """Displays a banner asking user to support developer.
-    
+
     Parameters
     --------------
     package_name: str
@@ -37,7 +37,7 @@ def support_message(
         repository_name = package_name
 
     if not is_directly_imported_in_jupyter_notebook():
-        return    
+        return
 
     from IPython.display import HTML, display
 
@@ -46,7 +46,7 @@ def support_message(
         os.path.dirname(os.path.abspath(__file__)),
         "metadata.json"
     )
-    
+
     # We check how many times this package was already
     # imported by this user.
     if os.path.exists(path):
