@@ -12,7 +12,9 @@ def support_message(
     image_url: str,
     repository_name: Optional[str] = None,
     number_of_imports: List[int] = (5, 100, 1000, 5000),
-    always_show: bool = False
+    always_show: bool = False,
+    config_dir: str = os.path.expanduser("~/.config/support_developer"),
+    config_filename: str = "import_count.json",
 ):
     """Displays a banner asking user to support developer.
 
@@ -32,6 +34,11 @@ def support_message(
         Import cases where we should display this banner.
     always_show: bool = False
         Whether to always display the message.
+    config_dir: str = "~/.config/support_developer"
+        The configuration directory
+        This could be the config directory of the main package if it uses one.
+    config_filename: str = "import_count.json"
+        The name of the configuration file to record the number of imports.
     """
     if repository_name is None:
         repository_name = package_name
@@ -42,23 +49,48 @@ def support_message(
     from IPython.display import HTML, display
 
     # Path where to store the loading counts
-    path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "metadata.json"
-    )
+    path = os.path.join(config_dir, config_filename)
 
-    # We check how many times this package was already
+    # Ensure the configuration directory is writable
+    config_dir_real: str = os.path.realpath(config_dir)
+    is_dir_writable: bool = True
+    if os.path.isdir(config_dir_real):
+        if not os.access(config_dir, os.W_OK) or not os.access(config_dir_real, os.W_OK):
+            is_dir_writable = False
+    elif os.path.exists(config_dir):
+        is_dir_writable = False
+    else:
+        try:
+            os.makedirs(config_dir)
+        except OSError:
+            is_dir_writable = False
+
+    if not always_show and not is_dir_writable:
+        return
+
+    # Ensure the configuration file is writable, and
+    # Check how many times this package was already
     # imported by this user.
-    if os.path.exists(path):
-        with open(path, "r") as f:
-            metadata = json.load(f)
+
+    config_file_real = os.path.realpath(path)
+    is_file_writable: bool = True
+    if os.path.exists(config_file_real):
+        if (os.path.isdir(config_file_real)
+        or not os.access(path, os.W_OK)
+        or not os.access(config_file_real, os.W_OK)):
+            is_file_writable = False
+            if not always_show:
+                return
+        else:
+            with open(path, "r") as f:
+                metadata = json.load(f)
     else:
         metadata = dict()
 
-    metadata[package_name] = metadata.get(package_name, 0) + 1
-
-    with open(path, "w") as f:
-        json.dump(metadata, f)
+    if is_file_writable:
+        metadata[package_name] = metadata.get(package_name, 0) + 1
+        with open(path, "w") as f:
+            json.dump(metadata, f)
 
     # If this is not one of those import cases where we expect
     # to show this banner, we skip forward.
